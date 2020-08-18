@@ -3,12 +3,15 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const bodyParser = require('body-parser');
 const hbs = require("hbs");
 
 var indexRouter = require("./routes/index");
 var scraperRouter = require("./routes/scraper");
 
 var app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // view engine setup
 hbs.registerPartials(__dirname + "/views/dashboard/partials");

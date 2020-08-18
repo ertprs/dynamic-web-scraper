@@ -12,18 +12,19 @@
     </div>
     <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-            <li class="active ">
+            <li class="{{#if active.dashboard }} active {{/if}}">
                 <a href="/">
                     <i class="now-ui-icons design_app"></i>
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li>
-                <a href="/scraper">
-                    <i class="now-ui-icons education_atom"></i>
-                    <p>Scraper</p>
-                </a>
-            </li>
+            <div id="table-nav-tabs">
+                <li class="{{#if active.scraper }} active {{/if}}">
+                    <a href="/scraper">
+                        <i class="now-ui-icons education_atom"></i>
+                        <p>Scraper</p>
+                    </a>
+                </li>
         </ul>
     </div>
 </div>

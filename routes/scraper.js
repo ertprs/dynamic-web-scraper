@@ -3,7 +3,10 @@ var router = express.Router();
 const Scraper = require("../lib/Scraper");
 
 router.get("/", function (req, res, next) {
-  res.render("dashboard/scraper/index", { title: "Scraper" });
+  res.render("dashboard/scraper/index", {
+    title: "Scraper",
+    active: { scraper: true },
+  });
 });
 
 router.post("/", function (req, res, next) {
@@ -13,11 +16,20 @@ router.post("/", function (req, res, next) {
     selector_tag: req.body.selector_tag,
   };
 
-  let quotes = Scraper.scrape(input).then((res) => {
-    console.log(res);
+  let result = Scraper.scrape(input).then((res) => {
+    console.log(res)
+    return res;
   });
-  res.send("ok");
-  // res.render("dashboard/scraper/index", { title: "Scraper" });
+  res.send({
+    title: "Scraper",
+    active: { scraper: true },
+    result: result
+  })
+  // res.render("dashboard/scraper/index", {
+  //   title: "Scraper",
+  //   active: { scraper: true },
+  //   result: result
+  // });
 });
 
 module.exports = router;

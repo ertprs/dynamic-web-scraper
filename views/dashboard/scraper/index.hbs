@@ -6,30 +6,46 @@
                     <h5 class="title">Persiapan Ekstraksi Data</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/scraper" method="post">
+                    <form id="form_scraper" action="/scraper" method="post">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>URL</label>
-                                    <input name="url" id="url" type="text" class="form-control"
+                                    <input required name="url" id="url" type="text" class="form-control"
                                         placeholder="https://20.detik.com/detikflash/... ">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Nama Data</label>
-                                    <input name="data_name" id="data_name" type="text" class="form-control" placeholder="">
+                            
+                            <div class="col-12 attributes_container">
+                                <div class="row" id="row1">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nama Data</label>
+                                            <input required name="data_name[]" id="data_name1" type="text" class="form-control data_name" placeholder="Judul">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Selector Tag</label>
+                                            <input required name="selector_tag[]" id="selector_tag1" type="text" class="form-control selector_tag" placeholder="h1">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-danger pull-right" type="button" onclick="removeAttr(1)">Hapus attribute</button>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Selector Tag</label>
-                                    <input name="selector_tag" id="selector_tag" type="text" class="form-control" placeholder="">
-                                </div>
+
+                            <div class="col-12">
+                                <button class="btn btn-success pull-right" type="button" onclick="addAttr()">Tambah attribute</button>
                             </div>
+
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-lg btn-block">Scrape now!</button>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Scrape now!</button>
                                 </div>
                             </div>
                         </div>
@@ -50,8 +66,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>About Me</label>
-                                <textarea style="min-height:50vh;" class="form-control" name="hasil" id="hasil" cols="30"
-                                    rows="10">null</textarea>
+                                <textarea style="min-height:50vh;" class="form-control" name="hasil" id="hasil"
+                                    cols="30" rows="10">null</textarea>
                             </div>
                         </div>
                     </div>
