@@ -10,26 +10,39 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/", async function (req, res, next) {
+  console.log(req.body);
   let input = {
     url: req.body.url,
-    data_name: req.body.data_name,
-    selector_tag: req.body.selector_tag,
+    attribute: req.body.attribute,
+    selector: req.body.selector,
+    selector_type: req.body.selector_type,
   };
   console.log(input);
 
-  let result = await Scraper.scrape(input)
-  console.log(result)
-  let str = `
+  try {
+    let result = await Scraper.scrape(input);
+    console.log(result);
+    let str = `
   <?xml version="1.0"?>
   <rdf:RDF 
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
   xmlns:rdf="${input.url}">
   
-  <rdf:Description rdf:about="Artikel berita"`
-  for (let i = 0; i < input.data_name.length; i++) {
-    str += `\n<artikel:${input.data_name[i]}>${result[input.data_name[i]]}</artikel:${input.data_name[i]}>`
+  <rdf:Description rdf:about="Artikel berita"`;
+    for (let i = 0; i < input.attribute.length; i++) {
+      str += `\n<artikel:${input.attribute[i]}>${
+        result[input.attribute[i]]
+      }</artikel:${input.attribute[i]}>`;
+    }
+    res.send(str);
+  } catch (error) {
+    res.send({
+      isError: true,
+      stsCode: 500,
+      msg: "Someting went wrong, can not scrape the page.",
+      errMsg: error.message
+    });
   }
-  res.send(str)
 });
 
 module.exports = router;

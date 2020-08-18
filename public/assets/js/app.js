@@ -1,4 +1,15 @@
 $(document).ready(function () {
+  $(document).on("change", ".selector_type", function () {
+    let idRow = $(this).data("id");
+    if ($(this).val() == "tag") {
+      $(`#selector_prefix${idRow}`).text('(eg. "h1")');
+      $(`#selector_type${idRow}`).val("tag");
+    } else if ($(this).val() == "class") {
+      $(`#selector_prefix${idRow}`).text('(eg. "title")');
+      $(`#selector_type${idRow}`).val("class");
+    }
+  });
+
   $("#form_scraper")
     .submit(function (e) {
       e.preventDefault();
@@ -8,15 +19,20 @@ $(document).ready(function () {
         alert("Inputan tidak boleh kosong!");
       },
       submitHandler: function (form) {
+        $(".btn_submit").attr("disabled", true);
         $.ajax({
           url: "/scraper",
           method: "POST",
           // hanya untuk input data tanpa dokumen
           data: $("#form_scraper").serialize(),
-          // data: new FormData($("#form_scraper")[0]),
           success: function (res) {
             console.log(res);
-            $("#hasil").val(res);
+            if (res.isError) {
+              $("#hasil").val(res.msg);
+            } else {
+              $("#hasil").val(res);
+            }
+            $(".btn_submit").attr("disabled", false);
             // swal({
             //     title: 'Success!',
             //     text: data.message,
@@ -26,6 +42,7 @@ $(document).ready(function () {
           },
           error: function (err) {
             console.log(err);
+            $(".btn_submit").attr("disabled", false);
             // var response = JSON.parse(err.responseText);
             // let str = ''
             // $.each(response.errors, function(key, value) {
@@ -51,15 +68,49 @@ function addAttr() {
         <div class="row" id="row${i}">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Nama Data</label>
-                    <input required name="data_name[]" id="data_name${i}" type="text" class="form-control data_name" placeholder="Judul">
+                    <label>Attribut</label>
+                    <input required name="attribute[]" id="attribute${i}" type="text" class="form-control attribute" placeholder="Judul">
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label>Selector Tag</label>
-                    <input required name="selector_tag[]" id="selector_tag${i}" type="text" class="form-control selector_tag" placeholder="h1">
+              <div class="row">
+                <input type="hidden" value="tag" name="selector_type[]" id="selector_type${i}">
+                <div class="col-12">
+                    <label>Jenis Selector</label>
                 </div>
+                <div class="col-12">
+                    <div class="form-check form-check-inline">
+                        <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
+                            id="selector_type_tag${i}" value="tag" checked>
+                        <label class="pl-1 form-check-label" for="selector_type_tag${i}">
+                            Tag
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
+                            id="selector_type_class${i}" value="class">
+                        <label class="pl-1 form-check-label" for="selector_type_class${i}">
+                            Class
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Selector Tag</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label class="col-form-label" id="selector_prefix${i}">(eg. "h1")</label>
+                            </div>
+                            <div class="col-9 pl-0">
+                                <input required name="selector[]" id="selector1" type="text"
+                                    class="form-control selector" placeholder="h1">
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
             </div>
             <div class="col-12">
                 <button class="btn btn-danger pull-right" type="button" onclick="removeAttr(${i})">Hapus attribute</button>
