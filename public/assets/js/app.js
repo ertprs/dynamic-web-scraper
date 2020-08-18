@@ -1,41 +1,46 @@
 $(document).ready(function () {
-  $("#form_scraper").validate({
-    invalidHandler: function (form, validator) {
-      alert("Inputan tidak boleh kosong!");
-    },
-    submitHandler: function (form) {
-      $.ajax({
-        url: "/scraper",
-        type: "POST",
-        // hanya untuk input data tanpa dokumen
-        // data : $('#form_scraper').serialize(),
-        data: new FormData($('#form_scraper')[0]),
-        success: function (data) {
-          console.log(data);
-          // swal({
-          //     title: 'Success!',
-          //     text: data.message,
-          //     type: 'success',
-          //     timer: '1500'
-          // })
-        },
-        error: function (data) {
-          console.log(data);
-          // var response = JSON.parse(data.responseText);
-          // let str = ''
-          // $.each(response.errors, function(key, value) {
-          //     str += value + ', ';
-          // });
-          // swal({
-          //     title: 'Oops...',
-          //     text: str,
-          //     type: 'error',
-          //     timer: '3000'
-          // })
-        },
-      });
-    },
-  });
+  $("#form_scraper")
+    .submit(function (e) {
+      e.preventDefault();
+    })
+    .validate({
+      invalidHandler: function (form, validator) {
+        alert("Inputan tidak boleh kosong!");
+      },
+      submitHandler: function (form) {
+        $.ajax({
+          url: "/scraper",
+          method: "POST",
+          // hanya untuk input data tanpa dokumen
+          data: $("#form_scraper").serialize(),
+          // data: new FormData($("#form_scraper")[0]),
+          success: function (res) {
+            console.log(res);
+            $("#hasil").val(res);
+            // swal({
+            //     title: 'Success!',
+            //     text: data.message,
+            //     type: 'success',
+            //     timer: '1500'
+            // })
+          },
+          error: function (err) {
+            console.log(err);
+            // var response = JSON.parse(err.responseText);
+            // let str = ''
+            // $.each(response.errors, function(key, value) {
+            //     str += value + ', ';
+            // });
+            // swal({
+            //     title: 'Oops...',
+            //     text: str,
+            //     type: 'error',
+            //     timer: '3000'
+            // })
+          },
+        });
+      },
+    });
 });
 
 let i = 1;
