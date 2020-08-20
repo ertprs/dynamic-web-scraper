@@ -16,6 +16,7 @@ router.post("/", async function (req, res, next) {
     attribute: req.body.attribute,
     selector: req.body.selector,
     selector_type: req.body.selector_type,
+    selector_traversal_type: req.body.selector_traversal_type,
   };
   console.log(input);
 

@@ -32,19 +32,23 @@
                                                 <label>Jenis Selector</label>
                                             </div>
                                             <div class="col-12">
-                                                <div class="form-check form-check-inline">
-                                                    <input data-id="1" class="form-check-input selector_type" type="radio" name="selector_type_option1"
-                                                        id="selector_type_tag1" value="tag" checked>
-                                                    <label class="pl-1 form-check-label" for="selector_type_tag1">
-                                                        Tag
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input data-id="1" class="form-check-input selector_type" type="radio" name="selector_type_option1"
-                                                        id="selector_type_class1" value="class">
-                                                    <label class="pl-1 form-check-label" for="selector_type_class1">
-                                                        Class
-                                                    </label>
+                                                <div class="form-group">
+                                                    <div class="form-check form-check-inline">
+                                                        <input data-id="1" class="form-check-input selector_type"
+                                                            type="radio" name="selector_type_option1"
+                                                            id="selector_type_tag1" value="tag" checked>
+                                                        <label class="pl-1 form-check-label" for="selector_type_tag1">
+                                                            Tag
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input data-id="1" class="form-check-input selector_type"
+                                                            type="radio" name="selector_type_option1"
+                                                            id="selector_type_class1" value="class">
+                                                        <label class="pl-1 form-check-label" for="selector_type_class1">
+                                                            Class
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="row">
@@ -54,12 +58,46 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-3">
-                                                            <label class="col-form-label" id="selector_prefix1">(eg. "h1")</label>
+                                                            <label class="col-form-label" id="selector_prefix1">(eg.
+                                                                "h1")</label>
                                                         </div>
                                                         <div class="col-9 pl-0">
                                                             <input required name="selector[]" id="selector1" type="text"
                                                                 class="form-control selector" placeholder="h1">
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="offset-md-6 col-md-6">
+                                        <div class="row">
+                                            <input type="hidden" value="first" name="selector_traversal_type[]"
+                                                id="selector_traversal_type1">
+                                            <div class="col-12">
+                                                <label>Penulusuran Elemen</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <div class="form-check form-check-inline">
+                                                        <input data-id="1"
+                                                            class="form-check-input selector_traversal_type"
+                                                            type="radio" name="selector_traversal_type_option1"
+                                                            id="selector_traversal_type_first1" value="first" checked>
+                                                        <label class="pl-1 form-check-label"
+                                                            for="selector_traversal_type_first1">
+                                                            Elemen pertama
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input data-id="1"
+                                                            class="form-check-input selector_traversal_type"
+                                                            type="radio" name="selector_traversal_type_option1"
+                                                            id="selector_traversal_type_all1" value="all">
+                                                        <label class="pl-1 form-check-label"
+                                                            for="selector_traversal_type_all1">
+                                                            Semua elemen
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,7 +120,8 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block btn_submit">Scrape now!</button>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block btn_submit">Scrape
+                                        now!</button>
                                 </div>
                             </div>
                         </div>

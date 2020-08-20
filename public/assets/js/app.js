@@ -1,12 +1,25 @@
+let i = 1;
+
 $(document).ready(function () {
   $(document).on("change", ".selector_type", function () {
     let idRow = $(this).data("id");
     if ($(this).val() == "tag") {
       $(`#selector_prefix${idRow}`).text('(eg. "h1")');
+      $(`#selector${idRow}`).attr("placeholder", "h1");
       $(`#selector_type${idRow}`).val("tag");
     } else if ($(this).val() == "class") {
-      $(`#selector_prefix${idRow}`).text('(eg. "title")');
+      $(`#selector_prefix${idRow}`).text('(eg. "author_name")');
+      $(`#selector${idRow}`).attr("placeholder", "author_name");
       $(`#selector_type${idRow}`).val("class");
+    }
+  });
+
+  $(document).on("change", ".selector_traversal_type", function () {
+    let idRow = $(this).data("id");
+    if ($(this).val() == "first") {
+      $(`#selector_traversal_type${idRow}`).val("first");
+    } else if ($(this).val() == "all") {
+      $(`#selector_traversal_type${idRow}`).val("all");
     }
   });
 
@@ -20,6 +33,7 @@ $(document).ready(function () {
       },
       submitHandler: function (form) {
         $(".btn_submit").attr("disabled", true);
+        console.log("Scraping...");
         $.ajax({
           url: "/scraper",
           method: "POST",
@@ -60,8 +74,6 @@ $(document).ready(function () {
     });
 });
 
-let i = 1;
-
 function addAttr() {
   i++;
   $(".attributes_container").append(`
@@ -79,19 +91,21 @@ function addAttr() {
                     <label>Jenis Selector</label>
                 </div>
                 <div class="col-12">
-                    <div class="form-check form-check-inline">
-                        <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
-                            id="selector_type_tag${i}" value="tag" checked>
-                        <label class="pl-1 form-check-label" for="selector_type_tag${i}">
-                            Tag
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
-                            id="selector_type_class${i}" value="class">
-                        <label class="pl-1 form-check-label" for="selector_type_class${i}">
-                            Class
-                        </label>
+                    <div class="form-group">
+                      <div class="form-check form-check-inline">
+                          <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
+                              id="selector_type_tag${i}" value="tag" checked>
+                          <label class="pl-1 form-check-label" for="selector_type_tag${i}">
+                              Tag
+                          </label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                          <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
+                              id="selector_type_class${i}" value="class">
+                          <label class="pl-1 form-check-label" for="selector_type_class${i}">
+                              Class
+                          </label>
+                      </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -109,6 +123,32 @@ function addAttr() {
                             </div>
                         </div>
                     </div>
+                  </div>
+              </div>
+            </div>
+            <div class="offset-md-6 col-md-6">
+              <div class="row">
+                  <input type="hidden" value="first" name="selector_traversal_type[]" id="selector_traversal_type${i}">
+                  <div class="col-12">
+                      <label>Penulusuran Elemen</label>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                          <div class="form-check form-check-inline">
+                              <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
+                                  id="selector_traversal_type_first${i}" value="first" checked>
+                              <label class="pl-1 form-check-label" for="selector_traversal_type_first${i}">
+                                  Elemen pertama
+                              </label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
+                                  id="selector_traversal_type_all${i}" value="all">
+                              <label class="pl-1 form-check-label" for="selector_traversal_type_all${i}">
+                                  Semua elemen
+                              </label>
+                          </div>
+                      </div>
                   </div>
               </div>
             </div>
