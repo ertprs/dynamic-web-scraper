@@ -29,13 +29,18 @@ router.post("/", async function (req, res, next) {
   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
   xmlns:rdf="${input.url}">
   
-  <rdf:Description rdf:about="Artikel berita"`;
+  <rdf:Description rdf:about="${result['scraped_page_title']}"`;
     for (let i = 0; i < input.attribute.length; i++) {
       str += `\n<artikel:${input.attribute[i]}>${
         result[input.attribute[i]]
       }</artikel:${input.attribute[i]}>`;
     }
-    res.send(str);
+    res.send({
+      isError: false,
+      stsCode: 200,
+      result: str,
+      pageTitle: result['scraped_page_title'],
+    });
   } catch (error) {
     res.send({
       isError: true,

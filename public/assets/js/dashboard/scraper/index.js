@@ -8,8 +8,8 @@ $(document).ready(function () {
       $(`#selector${idRow}`).attr("placeholder", "h1");
       $(`#selector_type${idRow}`).val("tag");
     } else if ($(this).val() == "class") {
-      $(`#selector_prefix${idRow}`).text('(eg. "author_name")');
-      $(`#selector${idRow}`).attr("placeholder", "author_name");
+      $(`#selector_prefix${idRow}`).text('(eg. "detail__author")');
+      $(`#selector${idRow}`).attr("placeholder", "detail__author");
       $(`#selector_type${idRow}`).val("class");
     }
   });
@@ -43,31 +43,17 @@ $(document).ready(function () {
             console.log(res);
             if (res.isError) {
               $("#hasil").val(res.msg);
+              console.log("Scraping failed.");
             } else {
-              $("#hasil").val(res);
+              console.log("Successfull scraping.");
+              $("#hasil").val(res.result);
+              $(".scraped_page_title").val(res.pageTitle);
             }
             $(".btn_submit").attr("disabled", false);
-            // swal({
-            //     title: 'Success!',
-            //     text: data.message,
-            //     type: 'success',
-            //     timer: '1500'
-            // })
           },
           error: function (err) {
             console.log(err);
             $(".btn_submit").attr("disabled", false);
-            // var response = JSON.parse(err.responseText);
-            // let str = ''
-            // $.each(response.errors, function(key, value) {
-            //     str += value + ', ';
-            // });
-            // swal({
-            //     title: 'Oops...',
-            //     text: str,
-            //     type: 'error',
-            //     timer: '3000'
-            // })
           },
         });
       },
@@ -118,7 +104,7 @@ function addAttr() {
                                 <label class="col-form-label" id="selector_prefix${i}">(eg. "h1")</label>
                             </div>
                             <div class="col-9 pl-0">
-                                <input required name="selector[]" id="selector1" type="text"
+                                <input required name="selector[]" id="selector${i}" type="text"
                                     class="form-control selector" placeholder="h1">
                             </div>
                         </div>
