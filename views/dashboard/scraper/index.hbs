@@ -135,14 +135,20 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="title">Hasil</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="title pull-left">Hasil</h5>
+                            <a class="btn btn-success btn_download pull-right" target="_blank" href="#"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.owl)</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
+                    <input type="hidden" name="objectId" class="objectId" value="">
                     <input type="hidden" name="scraped_page_title" class="scraped_page_title" value="Untitled">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea readonly style="min-height:50vh;" class="form-control" name="hasil" id="hasil"
+                                <textarea readonly style="min-height:50vh;" class="form-control" name="result" id="result"
                                     cols="30" rows="10">null</textarea>
                             </div>
                         </div>

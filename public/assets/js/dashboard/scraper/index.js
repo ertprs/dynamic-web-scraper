@@ -1,6 +1,7 @@
 let i = 1;
 
 $(document).ready(function () {
+  $(".btn_download").hide();
   $(document).on("change", ".selector_type", function () {
     let idRow = $(this).data("id");
     if ($(this).val() == "tag") {
@@ -32,8 +33,10 @@ $(document).ready(function () {
         alert("Inputan tidak boleh kosong!");
       },
       submitHandler: function (form) {
-        $(".btn_submit").attr("disabled", true);
         console.log("Scraping...");
+        $(".btn_submit").attr("disabled", true);
+        $(".btn_download").hide();
+        $(".objectId").val('');
         $.ajax({
           url: "/scraper",
           method: "POST",
@@ -42,11 +45,14 @@ $(document).ready(function () {
           success: function (res) {
             console.log(res);
             if (res.isError) {
-              $("#hasil").val(res.msg);
               console.log("Scraping failed.");
+              $("#result").val(res.msg);
             } else {
               console.log("Successfull scraping.");
-              $("#hasil").val(res.result);
+              $(".btn_download").attr('href', `/scraper/${res.objectId}/download`);
+              $(".btn_download").show();
+              $("#result").val(res.result);
+              $(".objectId").val(res.objectId);
               $(".scraped_page_title").val(res.pageTitle);
             }
             $(".btn_submit").attr("disabled", false);
@@ -153,4 +159,9 @@ function removeAttr(idx) {
   $(`.attributes_container #row${idx}`).remove();
   i--;
   console.log("Hapus attribute");
+}
+
+function downloadResult() {
+  let objectId = $('.objectId').val()
+  alert("Feature download is under developing.\n" + objectId);
 }
