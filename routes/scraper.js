@@ -30,13 +30,12 @@ router.post("/", async function (req, res, next) {
     let logger = fs.createWriteStream(__dirname + "/" + objectId + ".owl", {
       flags: "w", // 'a' means appending (old data will be preserved)
     });
-    let str = `
-  <?xml version="1.0"?>
-  <rdf:RDF 
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-  xmlns:rdf="${input.url}">
+    let str = `<?xml version="1.0"?>
+<rdf:RDF 
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+xmlns:rdf="${input.url}">
   
-  <rdf:Description rdf:about="${result["scraped_page_title"]}"`;
+<rdf:Description rdf:about="${result["scraped_page_title"]}"`;
 
     for (let i = 0; i < input.attribute.length; i++) {
       str += `\n<artikel:${input.attribute[i]}>${

@@ -24,6 +24,23 @@ $(document).ready(function () {
     }
   });
 
+  function isValid() {
+    let isvalid = true;
+    let attributes = $(".attributes");
+    $.each(attributes, (k, v) => {
+      if (v.value == "") {
+        isvalid = false;
+      }
+    });
+    let selector = $(".selector");
+    $.each(selector, (k, v) => {
+      if (v.value == "") {
+        isvalid = false;
+      }
+    });
+    return isvalid;
+  }
+
   $("#form_scraper")
     .submit(function (e) {
       e.preventDefault();
@@ -33,10 +50,15 @@ $(document).ready(function () {
         alert("Inputan tidak boleh kosong!");
       },
       submitHandler: function (form) {
+        if (!isValid()) {
+          alert("Inputan tidak boleh kosong!");
+          return false;
+        }
         console.log("Scraping...");
+        $("#result").val("");
         $(".btn_submit").attr("disabled", true);
         $(".btn_download").hide();
-        $(".objectId").val('');
+        $(".objectId").val("");
         $.ajax({
           url: "/scraper",
           method: "POST",
@@ -49,7 +71,10 @@ $(document).ready(function () {
               $("#result").val(res.msg);
             } else {
               console.log("Successfull scraping.");
-              $(".btn_download").attr('href', `/scraper/${res.objectId}/download`);
+              $(".btn_download").attr(
+                "href",
+                `/scraper/${res.objectId}/download`
+              );
               $(".btn_download").show();
               $("#result").val(res.result);
               $(".objectId").val(res.objectId);
@@ -162,6 +187,6 @@ function removeAttr(idx) {
 }
 
 function downloadResult() {
-  let objectId = $('.objectId').val()
+  let objectId = $(".objectId").val();
   alert("Feature download is under developing.\n" + objectId);
 }
