@@ -3,8 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const hbs = require("hbs");
+// DB Connection
+require("./database/connection");
+// require("./database/bootstrap")();
 
 var dashboardRouter = require("./routes/dashboard");
 var scraperRouter = require("./routes/scraper");

@@ -13,7 +13,9 @@
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "puppeteer": "^5.2.1"
+    "mysql2": "^2.1.0",
+    "puppeteer": "^5.2.1",
+    "sequelize": "^6.3.4"
   },
   "devDependencies": {}
 }
