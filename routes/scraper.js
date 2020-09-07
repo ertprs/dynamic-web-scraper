@@ -2,10 +2,11 @@ var express = require("express");
 var router = express.Router();
 const Scraper = require("../lib/Scraper");
 const ObjectID = require("bson").ObjectID;
-var fs = require("fs");
+const fs = require("fs");
 
 router.get("/", function (req, res, next) {
   res.render("dashboard/scraper/index", {
+    layout: "dashboard/layouts/master",
     title: "Scraper",
     active: { scraper: true },
   });

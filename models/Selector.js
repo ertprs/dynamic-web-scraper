@@ -11,17 +11,13 @@ module.exports = sequelize.define("User", {
     type: Sequelize.STRING(191),
     allowNul: false,
   },
-  email: {
+  type: {
     type: Sequelize.STRING(191),
-    unique: true,
-    allowNull: false,
+    allowNul: false,
   },
-  password: {
+  traversal_type: {
     type: Sequelize.STRING(191),
-    allowNull: false,
+    allowNul: false,
   },
-  role: {
-    type: Sequelize.STRING(191),
-    allowNull: false,
-  },
+  attribute_id: Sequelize.INTEGER(11),
 });
