@@ -1,0 +1,48 @@
+<div class="sidebar" data-color="orange">
+    <!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+    -->
+    <div class="logo">
+        <a href="#" class="simple-text logo-mini">
+            DWS
+        </a>
+        <a href="#" class="simple-text logo-normal">
+            Dynamic Web Scraper
+        </a>
+    </div>
+    <div class="sidebar-wrapper" id="sidebar-wrapper">
+        <ul class="nav">
+            <li class="{{#if active.dashboard }} active {{/if}}">
+                <a href="/">
+                    <i class="now-ui-icons design_app"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="{{#if active.scraper }} active {{/if}}">
+                <a href="/scraper">
+                    <i class="now-ui-icons education_atom"></i>
+                    <p>Scraper</p>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="collapse" href="#pagesExamples" class="{{#if active.sites_detikcom }}  {{else}} collapsed {{/if}}">
+                    <i class="now-ui-icons design_image"></i>
+                    <p>
+                        Sites <b class="caret"></b>
+                    </p>
+                </a>
+
+                <div class="collapse {{#if active.sites_detikcom }} show {{/if}}" id="pagesExamples" style="">
+                    <ul class="nav">
+                        <li class="{{#if active.sites_detikcom }} active {{/if}}">
+                            <a href="/sites/detikcom">
+                                <span class="sidebar-mini-icon">D</span>
+                                <span class="sidebar-normal">Detik.com </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

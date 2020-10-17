@@ -1,0 +1,157 @@
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Detik.com</h4>
+                </div>
+                <div class="card-body">
+                    <form id="form_indeks" action="/sites/detikcom/indeks" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Pilih Sub Kanal</label>
+                                    <select name="sub_channel" id="sub_channel" class="form-control">
+                                        <option value="" selected="">Semua Berita</option>
+                                        <option value="/berita">Berita</option>
+                                        <option value="/daerah">Daerah</option>
+                                        <option value="/internasional">Internasional</option>
+                                        <option value="/kolom">Kolom</option>
+                                        <option value="/pro-kontra">Pro-kontra</option>
+                                        <option value="/foto-news">Foto</option>
+                                        <option value="/bbc">BBC</option>
+                                        <option value="/australiaplus">Australia Plus</option>
+                                        <option value="/jawabarat">Jawa Barat</option>
+                                        <option value="/jawatengah">Jawa Tengah</option>
+                                        <option value="/jawatimur">Jawa Timur</option>
+                                        <option value="/suara-pembaca">Suara Pembaca</option>
+                                        <option value="/infografis">Infografis</option>
+                                        <option value="/investigasi">Investigasi</option>
+                                        <option value="/intermeso">Intermeso</option>
+                                        <option value="/crimestory">Crimestory</option>
+                                        <option value="/cool-event-surabaya">Cool-event-surabaya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <div class="col-12">
+                                        <label>Lihat Berdasarkan Tanggal</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" name="date" id="date" class="form-control datepicker" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit"
+                                            class="btn btn-lg btn-block btn-primary mb-2">Cari</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card card-contributions">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="hidden" name="_date" id="_date" value="">
+                                <input type="hidden" name="_sub_channel" id="_sub_channel" value="">
+                                <label>Halaman</label>
+                                <select name="_page" id="_page" class="form-control" readonly disabled>
+                                    {{!-- <option value="" selected>Semua Halaman</option> --}}
+                                    <option value="" selected>Halaman 1</option>
+                                    <option value="/2">Halaman 2</option>
+                                    <option value="/3">Halaman 3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-lg btn-block btn-success btn_submit" disabled><i
+                                    class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.zip)</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h1 class="card-title contents_count">Scraper Anda siap digunakan</h1>
+                            <h3 class="card-category process_description">Klik tombol 'Cari' terlebih dahulu.</h3>
+                        </div>
+                    </div>
+                    <div class="row contents_container">
+                    </div>
+                    {{!-- <p class="card-description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum, mollitia!</p> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal_scrape modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Persiapan Ekstraksi Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Ekstraksi Atribut</label>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input advanced_option"
+                                    type="radio" name="advanced_option_option"
+                                    id="advanced_option_default" value="default" checked>
+                                <label class="pl-1 form-check-label" for="advanced_option_default">
+                                    Default
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input advanced_option"
+                                    type="radio" name="advanced_option_option"
+                                    id="advanced_option_advanced" value="advanced">
+                                <label class="pl-1 form-check-label" for="advanced_option_advanced">
+                                    Advanced
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-froup">
+                            <p class="description">Secara default, atribut yang akan diekstrak adalah: Judul, Penulis, Tanggal, Detail.</p>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="col-12">
+                        <form id="form_scraper" action="/scraper" method="post">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="url">Url</label>
+                                        <input type="text" name="url" id="url" class="form-control" value="" readonly>
+                                    </div>
+                                    <input type="hidden" name="extraction_type" id="extraction_type" value="default">
+                                    <div class="advanced_form"></div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block btn_submit">Scrape
+                                            now!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
