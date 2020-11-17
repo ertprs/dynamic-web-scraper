@@ -32,7 +32,7 @@ $(document).ready(function () {
     $(".btn_download").hide();
     $(".contents_count").text("Tunggu sebentar,");
     $(".process_description").html(
-      '<i class="now-ui-icons loader_refresh spin"></i> Indexing contents...'
+      '<i class="now-ui-icons loader_refresh spin"></i> Sedang mencari...'
     );
     $(".contents_container").html(str);
     $("#_page").attr("readonly", "readonly").attr("disabled", true);
@@ -70,14 +70,14 @@ $(document).ready(function () {
           $(".btn_download").attr("href", `/scraper/${res.objectId}/download`);
           $(".btn_download").show();
           $.each(res.content_links, (k, v) => {
-            str += `<div class="col-12 mb-3 card">
+            str += `<div class="col-10 mb-3 card">
                         <div class="row card-body">
                             <div class="col-md-8">
                                 <p class="mb-0">${res.content_titles[k]}</p>
-                                <span class="pl-0">${res.content_dates[k]}</span>
+                                <span class="font-weight-normal pl-0">${res.content_dates[k]}</span>
                             </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-success btn-small btn_download_content" data-link="${res.content_links[k]}"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.owl)</button>
+                            <div class="col-md-4 text-right">
+                                <button class="btn btn-success btn-small btn_download_content" data-link="${res.content_links[k]}"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Ambil</button>
                             </div>
                         </div>
                     </div>`;
@@ -110,7 +110,7 @@ $(document).ready(function () {
         $(".btn_download").hide();
         $(".contents_count").text("Tunggu sebentar,");
         $(".process_description").html(
-          '<i class="now-ui-icons loader_refresh spin"></i> Indexing contents...'
+          '<i class="now-ui-icons loader_refresh spin"></i> Sedang mencari...'
         );
         $(".contents_container").html(str);
         $("#_page").attr("readonly", "readonly").attr("disabled", true);
@@ -148,14 +148,14 @@ $(document).ready(function () {
               );
               $(".btn_download").show();
               $.each(res.content_links, (k, v) => {
-                str += `<div class="col-12 mb-3 card">
+                str += `<div class="col-10 mb-3 card">
                             <div class="row card-body">
                                 <div class="col-md-8">
                                     <p class="mb-0">${res.content_titles[k]}</p>
-                                    <span class="pl-0">${res.content_dates[k]}</span>
+                                    <span class="font-weight-normal pl-0">${res.content_dates[k]}</span>
                                 </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-success btn-small btn_download_content" data-link="${res.content_links[k]}"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.owl)</button>
+                                <div class="col-md-4 text-right">
+                                    <button class="btn btn-success btn-small btn_download_content" data-link="${res.content_links[k]}"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Ambil</buton>
                                 </div>
                             </div>
                         </div>`;
@@ -195,7 +195,7 @@ $(document).ready(function () {
   
   $(document).on("change", ".advanced_option", function () {
     if ($(this).val() == "default") {
-      $('.description').text('Secara default, atribut yang akan diekstrak adalah: Judul, Author, dan Detail konten.')
+      $('.description').text('Atribut yang akan diekstrak adalah: Judul, Author, dan Detail konten.')
       $('#extraction_type').val("default")
       $('.advanced_form').html('')
     } else if ($(this).val() == "advanced") {
@@ -205,14 +205,14 @@ $(document).ready(function () {
         <div class="row">
             <div class="col-12 attributes_container">
                 <div class="row" id="row1">
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label>Atribut</label>
                             <input required name="attribute[]" id="attribute1" type="text"
                                 class="form-control attribute" placeholder="Judul">
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                         <div class="row">
                             <input type="hidden" value="tag" name="selector_type[]" id="selector_type1">
                             <div class="col-12">
@@ -224,7 +224,7 @@ $(document).ready(function () {
                                         <input data-id="1" class="form-check-input selector_type"
                                             type="radio" name="selector_type_option1"
                                             id="selector_type_tag1" value="tag" checked>
-                                        <label class="pl-1 form-check-label" for="selector_type_tag1">
+                                        <label class="font-weight-normal pl-1 form-check-label" for="selector_type_tag1">
                                             Tag
                                         </label>
                                     </div>
@@ -232,7 +232,7 @@ $(document).ready(function () {
                                         <input data-id="1" class="form-check-input selector_type"
                                             type="radio" name="selector_type_option1"
                                             id="selector_type_class1" value="class">
-                                        <label class="pl-1 form-check-label" for="selector_type_class1">
+                                        <label class="font-weight-normal pl-1 form-check-label" for="selector_type_class1">
                                             Class
                                         </label>
                                     </div>
@@ -240,15 +240,11 @@ $(document).ready(function () {
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-12">
-                                            <label>Selector Tag</label>
+                                            <label>Selector Tag <span id="selector_prefix1">(eg. "h1")</span></label>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-4">
-                                            <label class="col-form-label" id="selector_prefix1">(eg.
-                                                "h1")</label>
-                                        </div>
-                                        <div class="col-8 pl-0">
+                                        <div class="col-12">
                                             <input required name="selector[]" id="selector1" type="text"
                                                 class="form-control selector" placeholder="h1">
                                         </div>
@@ -257,7 +253,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="offset-md-3 col-md-9">
+                    <div class="offset-md-5 col-md-7">
                         <div class="row">
                             <input type="hidden" value="first" name="selector_traversal_type[]"
                                 id="selector_traversal_type1">
@@ -271,7 +267,7 @@ $(document).ready(function () {
                                             class="form-check-input selector_traversal_type"
                                             type="radio" name="selector_traversal_type_option1"
                                             id="selector_traversal_type_first1" value="first" checked>
-                                        <label class="pl-1 form-check-label"
+                                        <label class="font-weight-normal pl-1 form-check-label"
                                             for="selector_traversal_type_first1">
                                             Elemen pertama
                                         </label>
@@ -281,7 +277,7 @@ $(document).ready(function () {
                                             class="form-check-input selector_traversal_type"
                                             type="radio" name="selector_traversal_type_option1"
                                             id="selector_traversal_type_all1" value="all">
-                                        <label class="pl-1 form-check-label"
+                                        <label class="font-weight-normal pl-1 form-check-label"
                                             for="selector_traversal_type_all1">
                                             Semua elemen
                                         </label>
@@ -371,7 +367,7 @@ $(document).ready(function () {
               window.open(`/scraper/${res.objectId}/download`, '_blank');
             }
             $(".btn_submit").attr("disabled", false);
-            $(".btn_submit").html("Scrape now!");
+            $(".btn_submit").html("Ekstrak sekarang!");
           },
           error: function (err) {
             console.log(err);
@@ -386,13 +382,13 @@ function addAttr() {
   i++;
   $(".attributes_container").append(`
         <div class="row" id="row${i}">
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label>Attribut</label>
                     <input required name="attribute[]" id="attribute${i}" type="text" class="form-control attribute" placeholder="Judul">
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-7">
               <div class="row">
                 <input type="hidden" value="tag" name="selector_type[]" id="selector_type${i}">
                 <div class="col-12">
@@ -403,14 +399,14 @@ function addAttr() {
                       <div class="form-check form-check-inline">
                           <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
                               id="selector_type_tag${i}" value="tag" checked>
-                          <label class="pl-1 form-check-label" for="selector_type_tag${i}">
+                          <label class="font-weight-normal pl-1 form-check-label" for="selector_type_tag${i}">
                               Tag
                           </label>
                       </div>
                       <div class="form-check form-check-inline">
                           <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
                               id="selector_type_class${i}" value="class">
-                          <label class="pl-1 form-check-label" for="selector_type_class${i}">
+                          <label class="font-weight-normal pl-1 form-check-label" for="selector_type_class${i}">
                               Class
                           </label>
                       </div>
@@ -418,13 +414,10 @@ function addAttr() {
                     <div class="form-group">
                         <div class="row">
                             <div class="col-12">
-                                <label>Selector Tag</label>
+                                <label>Selector Tag <span id="selector_prefix${i}">(eg. "h1")</span></label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4">
-                                <label class="col-form-label" id="selector_prefix${i}">(eg. "h1")</label>
-                            </div>
                             <div class="col-8 pl-0">
                                 <input required name="selector[]" id="selector${i}" type="text"
                                     class="form-control selector" placeholder="h1">
@@ -434,7 +427,7 @@ function addAttr() {
                   </div>
               </div>
             </div>
-            <div class="offset-md-3 col-md-9">
+            <div class="offset-md-5 col-md-7">
               <div class="row">
                   <input type="hidden" value="first" name="selector_traversal_type[]" id="selector_traversal_type${i}">
                   <div class="col-12">
@@ -445,14 +438,14 @@ function addAttr() {
                           <div class="form-check form-check-inline">
                               <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
                                   id="selector_traversal_type_first${i}" value="first" checked>
-                              <label class="pl-1 form-check-label" for="selector_traversal_type_first${i}">
+                              <label class="font-weight-normal pl-1 form-check-label" for="selector_traversal_type_first${i}">
                                   Elemen pertama
                               </label>
                           </div>
                           <div class="form-check form-check-inline">
                               <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
                                   id="selector_traversal_type_all${i}" value="all">
-                              <label class="pl-1 form-check-label" for="selector_traversal_type_all${i}">
+                              <label class="font-weight-normal pl-1 form-check-label" for="selector_traversal_type_all${i}">
                                   Semua elemen
                               </label>
                           </div>

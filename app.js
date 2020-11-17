@@ -10,6 +10,7 @@ const path = require("path");
 const hbs = require("hbs");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const flash = require('connect-flash');
 const { userJoin, getCurrentUser, userLeave, getEmailUsers } = require("./src/utils/users");
 
 global.sequelize = new Sequelize(
@@ -25,7 +26,20 @@ global.sequelize = new Sequelize(
   }
 );
 global.browserSession = new Object();
+app.use(
+  session({
+    name: process.env.SESS_NAME,
+    resave: false,
+    saveUnitialized: false,
+    secret: process.env.SESS_SECRET,
+    cookie: {
+      sameSite: true,
+    },
+  })
+);
+app.use(flash());
 
+const auth = require('./src/middleware/auth');
 const authRouter = require("./src/routes/auth");
 const dashboardRouter = require("./src/routes/dashboard");
 const scraperRouter = require("./src/routes/scraper");
@@ -45,17 +59,6 @@ app.use(express.static("public"));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  session({
-    name: process.env.SESS_NAME,
-    resave: false,
-    saveUnitialized: false,
-    secret: process.env.SESS_SECRET,
-    cookie: {
-      sameSite: true,
-    },
-  })
-);
 
 io.sockets.on("connection", (socket) => {
   socket.on("accountLogin", ({ name, email }) => {
@@ -75,12 +78,11 @@ io.sockets.on("connection", (socket) => {
 });
 global.io = io;
 
-app.use("/", dashboardRouter);
-// app.use("/", (req, res) => res.send("Working perfectly"));
+app.use("/dashboard", auth, dashboardRouter);
 app.use("/auth", authRouter);
 // require("./src/routes/dashboard")(app);
-app.use("/scraper", scraperRouter);
-app.use("/sites", sitesRouter);
+app.use("/scraper", auth, scraperRouter);
+app.use("/sites", auth, sitesRouter);
 
 http.listen(3000, () => {
   console.log("listening on *:3000");

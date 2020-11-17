@@ -1,40 +1,49 @@
 var express = require("express");
 var router = express.Router();
-const User = require("../../models/User")
+const User = require("../../models/User");
 const bcrypt = require("bcrypt");
 
 router.get("/login", function (req, res, next) {
-  if(req.session.userInfo) res.redirect('/admin/dashboard')
-  
-//   res.send("ok login now");
+  if (req.session.userInfo) return res.redirect("/dashboard");
+  //   res.send("ok login now");
   res.render("auth/login", {
     layout: "layouts/authMaster",
     title: "Scraper",
     active: { login: true },
+    message: req.flash("message"),
+    old_email: req.flash("old_email"),
   });
 });
 
 router.post("/login", async function (req, res, next) {
-  if(req.session.userInfo) res.redirect('/admin/dashboard')
-  
+  if (req.session.userInfo) return res.redirect("/dashboard");
+  backURL = req.header("Referer") || "/";
+
   const user = await User.findOne({ where: { email: req.body.email } });
   if (user === null) {
-    return res.status(404).send("Cannot find user.");
+    req.flash("message", "Email atau password salah.");
+    req.flash("old_email", req.body.email);
+    return res.redirect(backURL);
   } else {
-    try {
-      if(bcrypt.compare(req.body.password, user.password)){
-        let info = {id: user.id, name:user.name, email:user.email}
-        req.session.userInfo = info;
-        
-        res.redirect("/admin/dashboard");
-      } else {
-        res.send("Login failed.");
+    bcrypt.compare(req.body.password, user.password, function (error, result) {
+      if (error) {
+        return res.status(500).send(err);
       }
-    } catch (error) {
-      res.status(500).send(error);
-    }
+      if (result) {
+        req.session.userInfo = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        };
+        return res.redirect("/dashboard");
+      } else {
+        req.flash("message", "Email atau password salah.");
+        req.flash("old_email", req.body.email);
+        return res.redirect(backURL);
+      }
+    });
   }
-  
+
   // res.render("dashboard/scraper/index", {
   //   layout: "dashboard/layouts/master",
   //   title: "Scraper",
@@ -43,22 +52,18 @@ router.post("/login", async function (req, res, next) {
 });
 
 router.get("/logout", function (req, res, next) {
-    if(!req.session.userInfo) return res.redirect("/auth/login");
-  
-    global.venomClient.close();
-    req.session.destroy(err => {
-      if(err) return res.redirect("/auth/login");
+  if (!req.session.userInfo) return res.redirect("/auth/login");
 
-      // res.clearCookie(process.env.SESS_NAME);
-      // sess001
-      return res.redirect("/auth/login")
-    })
-    return res.send("You are logged out.")
+  if (global.venomClient) global.venomClient.close();
+  req.session.destroy((error) => {
+    if (error) return res.status(500).send(error);
+    return res.redirect("/auth/login");
+  });
 });
 
 router.get("/register", function (req, res, next) {
-  if(req.session.userInfo) res.redirect('/admin/dashboard')
-  
+  if (req.session.userInfo) return res.redirect("/dashboard");
+
   res.send("ok register now");
   // res.render("dashboard/scraper/index", {
   //   layout: "dashboard/layouts/master",
@@ -68,13 +73,11 @@ router.get("/register", function (req, res, next) {
 });
 
 router.post("/register", async function (req, res, next) {
-  if(req.session.userInfo) res.redirect('/admin/dashboard')
-  
+  if (req.session.userInfo) return res.redirect("/dashboard");
+
   let hashedPwd = req.body.password;
   try {
-    const salt = await bcrypt.genSalt();
     hashedPwd = await bcrypt.hash(req.body.password, 10);
-    console.log(salt);
     console.log(hashedPwd);
   } catch (error) {
     console.log(error);
@@ -93,7 +96,7 @@ router.post("/register", async function (req, res, next) {
   req.session.userInfo = user;
 
   res.send(user);
-  
+
   res.render("dashboard/scraper/index", {
     layout: "dashboard/layouts/master",
     title: "Scraper",

@@ -1,9 +1,14 @@
 <div class="content">
-    <div class="row">
+    <div class="row py-3">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Detik.com</h4>
+            <div class="card custom_card">
+                <div class="pb-2 card-header text-center border-bottom pt-0">
+                    {{!-- <a class="pt-3 font-weight-bold pull-left pull-left" href="#">
+                        <span><i class="now-ui-icons arrows-1_minimal-left"></i></span> <span
+                            style="font-size: 18px;">Kembali</span></a> --}}
+                    <h4 class="card-title font-weight-bold pt-2">
+                        Detik.com
+                    </h4>
                 </div>
                 <div class="card-body">
                     <form id="form_indeks" action="/sites/detikcom/indeks" method="post">
@@ -43,7 +48,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="submit"
-                                            class="btn btn-lg btn-block btn-primary mb-2">Cari</button>
+                                            class="btn btn-lg btn-block btn-primary mt-md-0 mb-2">Cari</button>
                                     </div>
                                 </div>
                             </div>
@@ -53,14 +58,16 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="card card-contributions">
+            <div class="card custom_card">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="col-6">
+                    <div class="row form-group">
+                        <div class="col-12">
+                            <label>Halaman</label>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <input type="hidden" name="_date" id="_date" value="">
                                 <input type="hidden" name="_sub_channel" id="_sub_channel" value="">
-                                <label>Halaman</label>
                                 <select name="_page" id="_page" class="form-control" readonly disabled>
                                     {{!-- <option value="" selected>Semua Halaman</option> --}}
                                     <option value="" selected>Halaman 1</option>
@@ -69,9 +76,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <button class="btn btn-lg btn-block btn-success btn_submit" disabled><i
-                                    class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.zip)</button>
+                        <div class="col-md-6 text-right">
+                            <button class="mt-0 btn btn-success btn_submit" disabled><i
+                                class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.zip)</button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +89,7 @@
                             <h3 class="card-category process_description">Klik tombol 'Cari' terlebih dahulu.</h3>
                         </div>
                     </div>
-                    <div class="row contents_container">
+                    <div class="row contents_container justify-content-center">
                     </div>
                     {{!-- <p class="card-description">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum, mollitia!</p> --}}
                 </div>
@@ -112,7 +119,7 @@
                                 <input class="form-check-input advanced_option"
                                     type="radio" name="advanced_option_option"
                                     id="advanced_option_default" value="default" checked>
-                                <label class="pl-1 form-check-label" for="advanced_option_default">
+                                <label class="font-weight-normal pl-1 form-check-label" for="advanced_option_default">
                                     Default
                                 </label>
                             </div>
@@ -120,13 +127,13 @@
                                 <input class="form-check-input advanced_option"
                                     type="radio" name="advanced_option_option"
                                     id="advanced_option_advanced" value="advanced">
-                                <label class="pl-1 form-check-label" for="advanced_option_advanced">
+                                <label class="font-weight-normal pl-1 form-check-label" for="advanced_option_advanced">
                                     Advanced
                                 </label>
                             </div>
                         </div>
                         <div class="form-froup">
-                            <p class="description">Secara default, atribut yang akan diekstrak adalah: Judul, Penulis, Tanggal, Detail.</p>
+                            <p class="description">Atribut yang akan diekstrak adalah: Judul, Penulis, Tanggal, Detail.</p>
                         </div>
                         <hr>
                     </div>
@@ -141,11 +148,8 @@
                                     <input type="hidden" name="extraction_type" id="extraction_type" value="default">
                                     <div class="advanced_form"></div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block btn_submit">Scrape
-                                            now!</button>
-                                    </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg btn_submit">Ekstrak sekarang!</button>
                                 </div>
                             </div>
                         </form>

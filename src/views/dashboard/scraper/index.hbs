@@ -1,159 +1,173 @@
 <div class="content">
-    <div class="row">
+    <div class="row py-3">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Persiapan Ekstraksi Data</h4>
+            <div class="card custom_card">
+                <div class="pb-2 card-header text-center border-bottom pt-0">
+                    {{!-- <a class="pt-3 font-weight-bold pull-left pull-left" href="#">
+                        <span><i class="now-ui-icons arrows-1_minimal-left"></i></span> <span
+                            style="font-size: 18px;">Kembali</span></a> --}}
+                    <h4 class="card-title font-weight-bold pt-2">
+                        Persiapan Ekstraksi Data
+                    </h4>
                 </div>
                 <div class="card-body">
-                    <form id="form_scraper" action="/scraper" method="post">
-                        <input type="hidden" name="objectId" value="{{objectId}}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>URL</label>
-                                    <input required name="url" id="url" type="text" class="form-control"
-                                        placeholder="https://news.detik.com/berita...">
-                                </div>
-                            </div>
-
-                            <div class="col-12 attributes_container">
-                                <div class="row" id="row1">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Attribut</label>
-                                            <input required name="attribute[]" id="attribute1" type="text"
-                                                class="form-control attribute" placeholder="Judul">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <input type="hidden" value="tag" name="selector_type[]" id="selector_type1">
-                                            <div class="col-12">
-                                                <label>Jenis Selector</label>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <div class="form-check form-check-inline">
-                                                        <input data-id="1" class="form-check-input selector_type"
-                                                            type="radio" name="selector_type_option1"
-                                                            id="selector_type_tag1" value="tag" checked>
-                                                        <label class="pl-1 form-check-label" for="selector_type_tag1">
-                                                            Tag
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input data-id="1" class="form-check-input selector_type"
-                                                            type="radio" name="selector_type_option1"
-                                                            id="selector_type_class1" value="class">
-                                                        <label class="pl-1 form-check-label" for="selector_type_class1">
-                                                            Class
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <label>Selector Tag</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-3">
-                                                            <label class="col-form-label" id="selector_prefix1">(eg.
-                                                                "h1")</label>
-                                                        </div>
-                                                        <div class="col-9 pl-0">
-                                                            <input required name="selector[]" id="selector1" type="text"
-                                                                class="form-control selector" placeholder="h1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="offset-md-6 col-md-6">
-                                        <div class="row">
-                                            <input type="hidden" value="first" name="selector_traversal_type[]"
-                                                id="selector_traversal_type1">
-                                            <div class="col-12">
-                                                <label>Penulusuran Elemen</label>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <div class="form-check form-check-inline">
-                                                        <input data-id="1"
-                                                            class="form-check-input selector_traversal_type"
-                                                            type="radio" name="selector_traversal_type_option1"
-                                                            id="selector_traversal_type_first1" value="first" checked>
-                                                        <label class="pl-1 form-check-label"
-                                                            for="selector_traversal_type_first1">
-                                                            Elemen pertama
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input data-id="1"
-                                                            class="form-check-input selector_traversal_type"
-                                                            type="radio" name="selector_traversal_type_option1"
-                                                            id="selector_traversal_type_all1" value="all">
-                                                        <label class="pl-1 form-check-label"
-                                                            for="selector_traversal_type_all1">
-                                                            Semua elemen
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-danger pull-right" type="button"
-                                            onclick="removeAttr(1)">Hapus attribute</button>
-                                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form id="form_scraper" action="/scraper" method="post">
+                                <input type="hidden" name="objectId" value="{{objectId}}">
+                                <div class="row justify-content-center">
                                     <div class="col-md-12">
-                                        <hr>
+                                        <div class="form-group">
+                                            <label>URL</label>
+                                            <input required name="url" id="url" type="text" class="form-control"
+                                                placeholder="https://news.detik.com/berita...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 attributes_container">
+                                        <div class="row" id="row1">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Attribut</label>
+                                                    <input required name="attribute[]" id="attribute1" type="text"
+                                                        class="form-control attribute" placeholder="Judul">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <input type="hidden" value="tag" name="selector_type[]"
+                                                        id="selector_type1">
+                                                    <div class="col-12">
+                                                        <label>Jenis Selector</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <div class="form-check form-check-inline">
+                                                                <input data-id="1"
+                                                                    class="form-check-input selector_type" type="radio"
+                                                                    name="selector_type_option1" id="selector_type_tag1"
+                                                                    value="tag" checked>
+                                                                <label class="font-weight-normal pl-1 form-check-label"
+                                                                    for="selector_type_tag1">
+                                                                    Tag
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input data-id="1"
+                                                                    class="form-check-input selector_type" type="radio"
+                                                                    name="selector_type_option1"
+                                                                    id="selector_type_class1" value="class">
+                                                                <label class="font-weight-normal pl-1 form-check-label"
+                                                                    for="selector_type_class1">
+                                                                    Class
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label>Selector Tag <span id="selector_prefix1">(eg. "h1")</span></label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <input required name="selector[]" id="selector1"
+                                                                        type="text" class="form-control selector"
+                                                                        placeholder="h1">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="offset-md-6 col-md-6">
+                                                <div class="row">
+                                                    <input type="hidden" value="first" name="selector_traversal_type[]"
+                                                        id="selector_traversal_type1">
+                                                    <div class="col-12">
+                                                        <label>Penulusuran Elemen</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <div class="form-check form-check-inline">
+                                                                <input data-id="1"
+                                                                    class="form-check-input selector_traversal_type"
+                                                                    type="radio" name="selector_traversal_type_option1"
+                                                                    id="selector_traversal_type_first1" value="first"
+                                                                    checked>
+                                                                <label class="font-weight-normal pl-1 form-check-label"
+                                                                    for="selector_traversal_type_first1">
+                                                                    Elemen pertama
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input data-id="1"
+                                                                    class="form-check-input selector_traversal_type"
+                                                                    type="radio" name="selector_traversal_type_option1"
+                                                                    id="selector_traversal_type_all1" value="all">
+                                                                <label class="font-weight-normal pl-1 form-check-label"
+                                                                    for="selector_traversal_type_all1">
+                                                                    Semua elemen
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-danger pull-right" type="button"
+                                                    onclick="removeAttr(1)">Hapus attribute</button>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-success pull-right" type="button"
+                                            onclick="addAttr()">Tambah
+                                            attribute</button>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg btn_submit">Ekstrak
+                                                data!</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-12">
-                                <button class="btn btn-success pull-right" type="button" onclick="addAttr()">Tambah
-                                    attribute</button>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block btn_submit">Scrape
-                                        now!</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-12">
-                            <h4 class="card-title pull-left">Hasil</h4>
-                            <a class="btn btn-success btn_download pull-right" target="_blank" href="#"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.owl)</a>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <input type="hidden" name="objectId" class="objectId" value="">
-                    <input type="hidden" name="scraped_page_title" class="scraped_page_title" value="Untitled">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <textarea readonly style="min-height:50vh;" class="form-control" name="result" id="result"
-                                    cols="30" rows="10"></textarea>
+                            <div class="card custom_card">
+                                <div class="pb-2 card-header text-center border-bottom pt-0">
+                                    <h4 class="card-title font-weight-bold pt-2">
+                                        Persiapan Ekstraksi Data
+                                    </h4>
+                                    <a class="btn btn-success btn_download pull-right" target="_blank"
+                                        href="#"><i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh
+                                        (.owl)</a>
+                                </div>
+                                <div class="card-body">
+                                    <input type="hidden" name="objectId" class="objectId" value="">
+                                    <input type="hidden" name="scraped_page_title" class="scraped_page_title"
+                                        value="Untitled">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea readonly style="min-height:50vh;" class="form-control"
+                                                    name="result" id="result" cols="30" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

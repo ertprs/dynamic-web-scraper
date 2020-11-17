@@ -13,10 +13,11 @@
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-12">
-                                {{!-- pesan session --}}
-                                    {{!-- <div class="mb-4 font-medium text-sm text-green-600">
-                                        pesan
-                                    </div> --}}
+                                {{#if message}}
+                                <div class="mb-4 font-medium text-center text-green-600">
+                                    {{ message }}
+                                </div>
+                                {{/if}}
                             </div>
                         </div>
                         <div class="row">
@@ -27,7 +28,8 @@
                                             <i class="now-ui-icons users_circle-08"></i>
                                         </div>
                                     </span>
-                                    <input required autofocus name="email" type="email" class="form-control" placeholder="Masukkan email">
+                                    <input required autofocus value="{{#if old_email}} {{ old_email }} {{/if}}" name="email" type="email" class="form-control"
+                                        placeholder="Masukkan email">
                                 </div>
 
                                 <div class="input-group no-border form-control-lg">
@@ -36,7 +38,8 @@
                                             <i class="now-ui-icons ui-1_lock-circle-open"></i>
                                         </div>
                                     </div>
-                                    <input type="password" placeholder="Masukkan password" name="password" class="form-control" required autocomplete="current-password">
+                                    <input type="password" placeholder="Masukkan password" name="password"
+                                        class="form-control" required autocomplete="current-password">
                                 </div>
                             </div>
                         </div>

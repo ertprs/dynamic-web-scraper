@@ -115,14 +115,14 @@ function addAttr() {
                       <div class="form-check form-check-inline">
                           <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
                               id="selector_type_tag${i}" value="tag" checked>
-                          <label class="pl-1 form-check-label" for="selector_type_tag${i}">
+                          <label class="font-weight-normal pl-1 form-check-label" for="selector_type_tag${i}">
                               Tag
                           </label>
                       </div>
                       <div class="form-check form-check-inline">
                           <input data-id="${i}" class="form-check-input selector_type" type="radio" name="selector_type_option${i}"
                               id="selector_type_class${i}" value="class">
-                          <label class="pl-1 form-check-label" for="selector_type_class${i}">
+                          <label class="font-weight-normal pl-1 form-check-label" for="selector_type_class${i}">
                               Class
                           </label>
                       </div>
@@ -130,14 +130,11 @@ function addAttr() {
                     <div class="form-group">
                         <div class="row">
                             <div class="col-12">
-                                <label>Selector Tag</label>
+                                <label>Selector Tag <span id="selector_prefix${i}">(eg. "h1")</span></label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
-                                <label class="col-form-label" id="selector_prefix${i}">(eg. "h1")</label>
-                            </div>
-                            <div class="col-9 pl-0">
+                            <div class="col-12">
                                 <input required name="selector[]" id="selector${i}" type="text"
                                     class="form-control selector" placeholder="h1">
                             </div>
@@ -157,14 +154,14 @@ function addAttr() {
                           <div class="form-check form-check-inline">
                               <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
                                   id="selector_traversal_type_first${i}" value="first" checked>
-                              <label class="pl-1 form-check-label" for="selector_traversal_type_first${i}">
+                              <label class="font-weight-normal pl-1 form-check-label" for="selector_traversal_type_first${i}">
                                   Elemen pertama
                               </label>
                           </div>
                           <div class="form-check form-check-inline">
                               <input data-id="${i}" class="form-check-input selector_traversal_type" type="radio" name="selector_traversal_type_option${i}"
                                   id="selector_traversal_type_all${i}" value="all">
-                              <label class="pl-1 form-check-label" for="selector_traversal_type_all${i}">
+                              <label class="font-weight-normal pl-1 form-check-label" for="selector_traversal_type_all${i}">
                                   Semua elemen
                               </label>
                           </div>
