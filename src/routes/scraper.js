@@ -38,17 +38,19 @@ router.post("/", async function (req, res, next) {
     //   flags: "w", // 'a' means appending (old data will be preserved)
     // });
     let str = `<?xml version="1.0"?>
-<rdf:RDF 
-xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-xmlns:rdf="${input.url}">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:dc="${input.url}">
   
-<rdf:Description rdf:about="${result["scraped_page_title"]}">`;
+  <rdf:Description rdf:about="${result["scraped_page_title"]}">`;
 
     for (let i = 0; i < input.attribute.length; i++) {
-      str += `\n<artikel:${input.attribute[i]}>${
+      str += `\n<dc:${input.attribute[i]}>${
         result[input.attribute[i]]
-      }</artikel:${input.attribute[i]}>`;
+      }</dc:${input.attribute[i]}>`;
     }
+    str += `
+    </rdf:Description>
+  </rdf:RDF>`;
     // logger.write(str); // append string to your file
     // logger.end();
     // TODO: Saving data to db for records

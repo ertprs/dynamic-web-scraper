@@ -28,12 +28,12 @@ console.log(input.attribute)
       if (selector_traversal == "first") {
         str =
           document.querySelectorAll(selector).length > 0
-            ? document.querySelectorAll(selector)[0].innerHTML
+            ? document.querySelectorAll(selector)[0].textContent
             : null;
       } else {
         let elements = Array.from(document.querySelectorAll(selector));
         elements.map((element) => {
-          return (str += "\n" + element.innerHTML);
+          return (str += "\n" + element.textContent);
         });
       }
 
