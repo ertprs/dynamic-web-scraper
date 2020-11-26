@@ -34,26 +34,30 @@ router.post("/", async function (req, res, next) {
     let result = await Scraper.scrape(input);
 
     console.log(result);
-    // let logger = fs.createWriteStream(__dirname + "/" + objectId + ".owl", {
-    //   flags: "w", // 'a' means appending (old data will be preserved)
-    // });
-    let str = `<?xml version="1.0"?>
+    let strXML = `<?xml version="1.0"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
   xmlns:dc="${input.url}">
   
   <rdf:Description rdf:about="${result["scraped_page_title"]}">`;
 
     for (let i = 0; i < input.attribute.length; i++) {
-      str += `\n<dc:${input.attribute[i]}>${
+      strXML += `\n<dc:${input.attribute[i]}>${
         result[input.attribute[i]]
       }</dc:${input.attribute[i]}>`;
     }
-    str += `
+    strXML += `
     </rdf:Description>
   </rdf:RDF>`;
-    // logger.write(str); // append string to your file
-    // logger.end();
-    // TODO: Saving data to db for records
+
+    let arrContentJson = [];
+    for (let i = 0; i < input.attribute.length; i++) {
+      arrContentJson.push({
+        attribute: input.attribute[i],
+        value: result[input.attribute[i]]
+      });
+    }
+    // let strJSON = JSON.stringify(arrContentJson);
+  
     const scrape = await Scrape.findOne({ where: { code: input.objectId } });
     if (scrape === null) {
       let arrAttrs = []
@@ -72,36 +76,13 @@ router.post("/", async function (req, res, next) {
         code: input.objectId,
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: str,
+        content: JSON.stringify({ xml: strXML, json: arrContentJson}),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs),
       }).catch((err) => {
         console.log("errMsg:", err);
       });
-
-      // let attr = null
-      // for (let i = 0; i < input.attribute.length; i++) {
-        // attr = await Attribute.create({
-        //   name: input.attribute[i],
-        //   scrape_id: newScrape.id,
-        // }).catch((err) => {
-        //   console.log("errMsg:", err);
-        // })
-
-        // await Selector.create({
-        //   name: input.selector[i],
-        //   type: input.selector_type[i],
-        //   traversal_type: input.selector_traversal_type[i],
-        //   attribute_id: attr.id,
-        // }).catch((err) => {
-        //   console.log("errMsg:", err);
-        // })
-
-        // str += `\n<artikel:${input.attribute[i]}>${
-        //   result[input.attribute[i]]
-        // }</artikel:${input.attribute[i]}>`;
-      // }
 
     } else {
       // update
@@ -119,7 +100,7 @@ router.post("/", async function (req, res, next) {
       Scrape.update({
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: str,
+        content: JSON.stringify({ xml: strXML, json: arrContentJson}),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs)
@@ -134,7 +115,7 @@ router.post("/", async function (req, res, next) {
       objectId: input.objectId,
       isError: false,
       stsCode: 200,
-      result: str,
+      result: strXML,
       pageTitle: result["scraped_page_title"],
     });
   } catch (error) {

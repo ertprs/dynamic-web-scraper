@@ -90,6 +90,27 @@
             email: userInfo.email,
         });
     </script> --}}
+    <script>
+        $(document).ready(function() {
+            let data = {{{json data}}}
+            if(data) {
+                let strPaginasi = `<nav aria-label="Page navigation">
+                <ul class="pagination">`;
+                    if(data.currentPage > 1) strPaginasi += `<li class="page-item"><a class="page-link" href="?page=${ data.prevPage }&size=${ data.size }">< Sebelumnya</a></li>`;
+                    else strPaginasi += `<li class="page-item disabled"><span class="page-link">< Previous</span></li>`;
+                    // data.totalPages
+                    for(let i = 0; i < data.totalPages; i++) {
+                        if(i+1 == data.currentPage) strPaginasi += `<li class="page-item active"><span class="page-link acive">${ i+1 }</span></li>`;
+                        else strPaginasi += `<li class="page-item"><a class="page-link active" href="?page=${ i+1 }&size=${ data.size }">${ i+1 }</a></li>`;
+                    }
+                    if(data.currentPage < data.totalPages) strPaginasi += `<li class="page-item"><a class="page-link" href="?page=${ data.nextPage }&size=${ data.size }">Next ></a></li>`;
+                    else strPaginasi += `<li class="page-item disabled"><span class="page-link">Next ></span></li>`;
+                strPaginasi += `</ul>
+            </nav>`;
+            $('.page_navigation').html(strPaginasi);
+            }
+        })
+    </script>
 </body>
 
 </html>

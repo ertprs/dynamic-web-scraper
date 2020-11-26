@@ -46,8 +46,51 @@ const scraperRouter = require("./src/routes/scraper");
 const sitesRouter = require("./src/routes/sites");
 
 // set view engine setup
-hbs.registerHelper('json', function (content) {
-  return JSON.stringify(content);
+hbs.registerHelper('json', function (val) {
+  return JSON.stringify(val);
+});
+hbs.registerHelper('formatedDate', function (val) {
+  return new Date(val).toDateString();
+});
+hbs.registerHelper("inc", function(val)
+{
+    return parseInt(val) + 1;
+});
+hbs.registerHelper("dec", function(val)
+{
+    return parseInt(val) - 1;
+});
+hbs.registerHelper('times', function(n, block) {
+  var accum = '';
+  for(var i = 0; i < n; ++i)
+      accum += block.fn(i);
+  return accum;
+});
+hbs.registerHelper('ifCond', function (v1, operator, v2, options) {
+  switch (operator) {
+      case '==':
+          return (v1 == v2) ? options.fn(this) : options.inverse(this);
+      case '===':
+          return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '!=':
+          return (v1 != v2) ? options.fn(this) : options.inverse(this);
+      case '!==':
+          return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '<':
+          return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      case '<=':
+          return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      case '>':
+          return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      case '>=':
+          return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      case '&&':
+          return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      case '||':
+          return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      default:
+          return options.inverse(this);
+  }
 });
 hbs.registerPartials(path.join(__dirname, "./src/views/dashboard/partials"));
 hbs.registerPartials(path.join(__dirname, "./src/views/partials"));

@@ -40,7 +40,6 @@ console.log(input.attribute)
       attributes[attr] = str ? str.trim() : str;
     });
 
-    
     return attributes;
   }, input);
   

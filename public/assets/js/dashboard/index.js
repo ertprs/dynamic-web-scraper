@@ -1,1 +1,3 @@
-console.log("Assalamualaikum");
+function deleteData(id) {
+    console.log(id)
+}

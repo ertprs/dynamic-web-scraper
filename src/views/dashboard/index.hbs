@@ -37,12 +37,24 @@
                             <div class="col-md-12">
                                 <table class="table" id="jenis_table">
                                     <thead>
-                                        <th class="">ID</th>
-                                        <th class="">Kode</th>
-                                        <th class="">Nama Jenis</th>
+                                        <th class="" width="80">Kode</th>
+                                        <th class="" width="500">URL</th>
+                                        <th class="">Atribut</th>
+                                        <th class="">Diekstrak pada</th>
                                         <th class="text-right">Action</th>
                                     </thead>
                                     <tbody>
+                                        {{#each data.scrapes}}
+                                        <tr>
+                                            <td width="80">{{ this.code }}</td>
+                                            <td width="500">{{ this.url }}</td>
+                                            <td>{{ this.attributes }}</td>
+                                            <td>{{ formatedDate this.updatedAt }}</td>
+                                            <td><div class="text-right">
+                                                <a href="#" class="btn btn-primary btn-icon btn-round mb-2 ml-2"><i class="fa fa-edit"></i></a>
+                                                <button onclick="deleteData({{ this.id }})" class="btn btn-danger btn-icon btn-round mb-2 ml-2"><i class="fa fa-trash"></i></button></div></td>
+                                        </tr>
+                                        {{/each}}
                                     </tbody>
                                 </table>
                             </div>
@@ -55,11 +67,10 @@
             <div class="row justify-content-between px-3">
                 <div class="total_show">
                     <span class="font-disabled">Total Show Data</span>
-                    <span class="font-disabled span_box">2</span>
-                    <span class="font-disabled">dari 3 Data</span>
+                    <span class="font-disabled span_box">{{ data.totalItems }}</span>
+                    <span class="font-disabled">dari {{ data.totalItems }} Data</span>
                 </div>
                 <div class="page_navigation">
-                    {{> pagination }}
                 </div>
             </div>
         </div>
