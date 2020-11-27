@@ -3,14 +3,16 @@ var router = express.Router();
 const puppeteer = require("puppeteer");
 const Scraper = require("../utils/Scraper");
 const ObjectID = require("bson").ObjectID;
-const fs = require("fs");
+const Scrape = require("../../models/Scrape");
 
 router.get("/detikcom", function (req, res, next) {
   // scrape().then((data) => console.log("Data", data));
   res.render("dashboard/sites/detikcom/index", {
     layout: "dashboard/layouts/master",
     title: "Detik.com",
-    active: { sites_detikcom: true },
+    active: {
+      sites_detikcom: true
+    },
   });
 });
 
@@ -36,12 +38,13 @@ router.post("/detikcom/indeks", async function (req, res, next) {
   }
 
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true
+    });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(0);
     await page.goto(
-      `${input.url}${input.sub_channel}/indeks${input.page}?date=${strDate}`,
-      {
+      `${input.url}${input.sub_channel}/indeks${input.page}?date=${strDate}`, {
         waitUntil: "domcontentloaded",
       }
     );
@@ -109,65 +112,139 @@ router.post("/detikcom/indeks", async function (req, res, next) {
 
 
 router.post("/detikcom/scrape", async function (req, res, next) {
-  let input = null;
-  if (req.body.extraction_type == "default") {
-    input = {
-      url: req.body.url,
-      attribute: [ 'Judul', 'Author', 'Tanggal', 'Detail' ],
-      selector: [ 'h1', 'detail__author', 'detail__date', 'p' ],
-      selector_type: [ 'tag', 'class', 'class', 'tag' ],
-      selector_traversal_type: [ 'first', 'first', 'first', 'all' ]
-    };
-  } else {
-    input = {
-      url: req.body.url,
-      attribute: req.body.attribute,
-      selector: req.body.selector,
-      selector_type: req.body.selector_type,
-      selector_traversal_type: req.body.selector_traversal_type,
-    };
-  }
-  console.log(input);
+      let input = null;
+      if (req.body.extraction_type == "default") {
+        input = {
+          url: req.body.url,
+          attribute: ['Judul', 'Author', 'Tanggal', 'Detail'],
+          selector: ['h1', 'detail__author', 'detail__date', 'p'],
+          selector_type: ['tag', 'class', 'class', 'tag'],
+          selector_traversal_type: ['first', 'first', 'first', 'all']
+        };
+      } else {
+        input = {
+          url: req.body.url,
+          attribute: req.body.attribute,
+          selector: req.body.selector,
+          selector_type: req.body.selector_type,
+          selector_traversal_type: req.body.selector_traversal_type,
+        };
+      }
+      console.log(input);
 
-  try {
-    let result = await Scraper.scrape(input);
-    let objectId = new ObjectID();
-
-    console.log(result);
-    let logger = fs.createWriteStream(__dirname + "/" + objectId + ".owl", {
-      flags: "w", // 'a' means appending (old data will be preserved)
-    });
-    let str = `<?xml version="1.0"?>
-<rdf:RDF 
-xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-xmlns:rdf="${input.url}">
+      try {
+        let result = await Scraper.scrape(input);
+        let objectId = new ObjectID().toString();
+        console.log(result);
+        let strXML = `<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:dc="${input.url}">
   
-<rdf:Description rdf:about="${result["scraped_page_title"]}"`;
+  <rdf:Description rdf:about="${result["scraped_page_title"]}">`;
 
-    for (let i = 0; i < input.attribute.length; i++) {
-      str += `\n<artikel:${input.attribute[i]}>${
+        for (let i = 0; i < input.attribute.length; i++) {
+          strXML += `\n<dc:${input.attribute[i].replace(/\s/g, "-")}>${
         result[input.attribute[i]]
-      }</artikel:${input.attribute[i]}>`;
-    }
-    logger.write(str); // append string to your file
-    logger.end();
-    // TODO: Saving data to db for records
+      }</dc:${input.attribute[i].replace(/\s/g, "-")}>`;
+        }
+        strXML += `
+    </rdf:Description>
+  </rdf:RDF>`;
 
-    return res.send({
-      objectId: objectId,
-      isError: false,
-      stsCode: 200,
-      result: str,
-      pageTitle: result["scraped_page_title"],
-    });
-  } catch (error) {
-    return res.send({
-      isError: true,
-      stsCode: 500,
-      msg: "Someting went wrong, can not scrape the page.",
-      errMsg: error.message,
-    });
-  }
-});
+        let arrContentJson = [];
+        for (let i = 0; i < input.attribute.length; i++) {
+          arrContentJson.push({
+            name: input.attribute[i].replace(/\s/g, "-"),
+            value: result[input.attribute[i]]
+          });
+        }
 
-module.exports = router;
+        const scrape = await Scrape.findOne({
+          where: {
+            page_title: result["scraped_page_title"]
+          }
+        });
+        console.log(scrape)
+        if (scrape === null) {
+          let arrAttrs = []
+          for (let i = 0; i < input.attribute.length; i++) {
+            arrAttrs.push({
+              name: input.attribute[i].replace(/\s/g, "-"),
+              selectors: {
+                name: input.selector[i],
+                type: input.selector_type[i],
+                traversal_type: input.selector_traversal_type[i],
+              }
+            })
+          }
+          let newScrape = await Scrape.create({
+            code: objectId,
+            url: input.url,
+            page_title: result["scraped_page_title"],
+            content: JSON.stringify({
+              xml: strXML,
+              json: {
+                url: input.url,
+                title: result["scraped_page_title"],
+                attributes: arrContentJson
+              }
+            }),
+            // user_id: req.session.userInfo.id
+            user_id: 1,
+            attributes: JSON.stringify(arrAttrs),
+          }).catch((err) => {
+            console.log("errMsg:", err);
+          });
+
+        } else {
+          objectId = scrape.code;
+          let arrAttrs = []
+          for (let i = 0; i < input.attribute.length; i++) {
+            arrAttrs.push({
+              name: input.attribute[i].replace(/\s/g, "-"),
+              selectors: {
+                name: input.selector[i],
+                type: input.selector_type[i],
+                traversal_type: input.selector_traversal_type[i],
+              }
+            })
+          }
+          Scrape.update({
+              url: input.url,
+              page_title: result["scraped_page_title"],
+              content: JSON.stringify({
+                xml: strXML,
+                json: {
+                  url: input.url,
+                  title: result["scraped_page_title"],
+                  attributes: arrContentJson
+                }
+              }),
+              // user_id: req.session.userInfo.id
+              user_id: 1,
+              attributes: JSON.stringify(arrAttrs)
+            }, {
+              where: {
+                page_title: result["scraped_page_title"]
+              }
+            });
+          }
+
+          return res.send({
+            objectId: objectId,
+            isError: false,
+            stsCode: 200,
+            result: strXML,
+            pageTitle: result["scraped_page_title"],
+          });
+        } catch (error) {
+          return res.send({
+            isError: true,
+            stsCode: 500,
+            msg: "Oops, terjadi kesalahan. Coba beberapa saat lagi.",
+            errMsg: error.message,
+          });
+        }
+      });
+
+    module.exports = router;

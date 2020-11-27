@@ -14,7 +14,9 @@ router.get("/", function (req, res, next) {
     layout: "dashboard/layouts/master",
     title: "Scraper",
     objectId: objectId.toString(),
-    active: { scraper: true },
+    active: {
+      scraper: true
+    },
   });
 });
 
@@ -56,12 +58,14 @@ router.post("/", async function (req, res, next) {
         value: result[input.attribute[i]]
       });
     }
-    // let strJSON = JSON.stringify(arrContentJson);
-  
-    const scrape = await Scrape.findOne({ where: { code: input.objectId } });
+
+    const scrape = await Scrape.findOne({
+      where: {
+        code: input.objectId
+      }
+    });
     if (scrape === null) {
       let arrAttrs = []
-      // [{"name":"h1","type":"tag","traversal_type":"first","selectors":{"name":"h1","type":"tag","traversal_type":"first"}}]
       for (let i = 0; i < input.attribute.length; i++) {
         arrAttrs.push({
           name: input.attribute[i].replace(/\s/g, "-"),
@@ -76,7 +80,14 @@ router.post("/", async function (req, res, next) {
         code: input.objectId,
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: JSON.stringify({ xml: strXML, json: {url: input.url, title: result["scraped_page_title"], attributes: arrContentJson}}),
+        content: JSON.stringify({
+          xml: strXML,
+          json: {
+            url: input.url,
+            title: result["scraped_page_title"],
+            attributes: arrContentJson
+          }
+        }),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs),
@@ -100,7 +111,14 @@ router.post("/", async function (req, res, next) {
       Scrape.update({
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: JSON.stringify({ xml: strXML, json: {url: input.url, title: result["scraped_page_title"], attributes: arrContentJson}}),
+        content: JSON.stringify({
+          xml: strXML,
+          json: {
+            url: input.url,
+            title: result["scraped_page_title"],
+            attributes: arrContentJson
+          }
+        }),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs)
@@ -130,21 +148,26 @@ router.post("/", async function (req, res, next) {
 
 router.get("/:objectId/download", async function (req, res, next) {
   let objectId = req.params.objectId;
-  const scrape = await Scrape.findOne({ where: { code: objectId } });
+  const scrape = await Scrape.findOne({
+    where: {
+      code: objectId
+    }
+  });
   if (scrape === null) {
     return res.status(404).send("Cannot find data.");
   } else {
-    const fileData = scrape.content
+    let content = JSON.parse(scrape.content);
+    const fileData = content.xml;
     const fileName = `${scrape.page_title}.owl`
     const fileType = 'text/plain'
-  
+
     res.writeHead(200, {
       'Content-Disposition': `attachment; filename="${fileName}"`,
       'Content-Type': fileType,
     })
-  
-    const download = Buffer.from(fileData)
-    return res.end(download)
+
+    const download = Buffer.from(fileData);
+    return res.end(download);
   }
   // const file = __dirname + `/${objectId}.owl`;
   // res.download(file);
