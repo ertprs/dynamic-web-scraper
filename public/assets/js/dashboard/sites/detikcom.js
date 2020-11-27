@@ -29,6 +29,7 @@ $(document).ready(function () {
   $(document).on("change", "#_page", function () {
     let str = ``;
     $(".btn_submit").attr("disabled", true);
+    $(".btn_download_zip").attr("disabled", true);
     $(".btn_download").hide();
     $(".contents_count").text("Tunggu sebentar,");
     $(".process_description").html(
@@ -127,7 +128,10 @@ $(document).ready(function () {
               $("#result").val(res.msg);
             } else {
               console.log("Successfull scraping.");
+              $('.btn_download_zip').data('url', res.input.url);
+              $('.btn_download_zip').data('tanggal', res.input.tanggal);
               $(".btn_submit").attr("disabled", false);
+              $(".btn_download_zip").attr("disabled", false);
               $(".contents_count").text(res.content_links.length);
               $(".process_description").text("Artikel ditemukan.");
               $("#_date").val(res.input.date);
@@ -375,6 +379,10 @@ $(document).ready(function () {
           },
         });
       },
+    });
+
+    $(document).on('click', '.btn_download_zip', function() {
+      window.open(`detikcom/indeks/zip?url=${$(this).data('url')}&extraction_type=default&title=${$(this).data('tanggal')}`, '_blank');
     });
 });
 

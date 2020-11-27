@@ -2,10 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Scraper = require("../utils/Scraper");
 const ObjectID = require("bson").ObjectID;
-// const fs = require("fs");
 const Scrape = require("../../models/Scrape");
-// const Attribute = require("../../models/Attribute");
-// const Selector = require("../../models/Selector");
 
 router.get("/", function (req, res, next) {
   let objectId = new ObjectID();
