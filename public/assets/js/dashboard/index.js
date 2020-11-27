@@ -24,7 +24,6 @@ $(document).ready(function() {
                         type: 'success',
                         timer: '1500'
                     });
-                    // TODO: HAPUS SCRAPE, dan GANTI '-' JADI SPASI dan sebaliknya
                     location.reload();
                 },
                 error: function(err) {
@@ -100,9 +99,9 @@ function editData(id) {
             let strDataForm = ``;
             res.data.content.json.attributes.forEach(attr => {
                 strDataForm += `<div class="form-group mb-2">
-                                    <label class="font-disabled">${attr.name}</label>
-                                    <input placeholder="Masukkan nama atribut" value="${attr.name}" type="text" class="form-control" id="${attr.name}_attribute_name" name="attribute_names[]" required>
-                                    <textarea placeholder="Masukkan isi atribut" class="form-control" id="${attr.name}_attribute_value" name="attribute_values[]" required cols="30" rows="10">${attr.value}</textarea>
+                                    <label class="font-disabled">${attr.name.replace(/-/g, " ")}</label>
+                                    <input placeholder="Masukkan nama atribut" value="${attr.name.replace(/-/g, " ")}" type="text" class="form-control" id="${attr.name.replace(/-/g, " ")}_attribute_name" name="attribute_names[]" required>
+                                    <textarea placeholder="Masukkan isi atribut" class="form-control" id="${attr.name.replace(/-/g, " ")}_attribute_value" name="attribute_values[]" required cols="30" rows="10">${attr.value}</textarea>
                                 </div>`;
             });
             $('.data_form').html(strDataForm);

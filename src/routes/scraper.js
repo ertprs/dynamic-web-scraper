@@ -41,9 +41,9 @@ router.post("/", async function (req, res, next) {
   <rdf:Description rdf:about="${result["scraped_page_title"]}">`;
 
     for (let i = 0; i < input.attribute.length; i++) {
-      strXML += `\n<dc:${input.attribute[i]}>${
+      strXML += `\n<dc:${input.attribute[i].replace(/\s/g, "-")}>${
         result[input.attribute[i]]
-      }</dc:${input.attribute[i]}>`;
+      }</dc:${input.attribute[i].replace(/\s/g, "-")}>`;
     }
     strXML += `
     </rdf:Description>
@@ -52,7 +52,7 @@ router.post("/", async function (req, res, next) {
     let arrContentJson = [];
     for (let i = 0; i < input.attribute.length; i++) {
       arrContentJson.push({
-        name: input.attribute[i],
+        name: input.attribute[i].replace(/\s/g, "-"),
         value: result[input.attribute[i]]
       });
     }
@@ -64,7 +64,7 @@ router.post("/", async function (req, res, next) {
       // [{"name":"h1","type":"tag","traversal_type":"first","selectors":{"name":"h1","type":"tag","traversal_type":"first"}}]
       for (let i = 0; i < input.attribute.length; i++) {
         arrAttrs.push({
-          name: input.attribute[i],
+          name: input.attribute[i].replace(/\s/g, "-"),
           selectors: {
             name: input.selector[i],
             type: input.selector_type[i],
@@ -89,7 +89,7 @@ router.post("/", async function (req, res, next) {
       let arrAttrs = []
       for (let i = 0; i < input.attribute.length; i++) {
         arrAttrs.push({
-          name: input.attribute[i],
+          name: input.attribute[i].replace(/\s/g, "-"),
           selectors: {
             name: input.selector[i],
             type: input.selector_type[i],
@@ -111,7 +111,7 @@ router.post("/", async function (req, res, next) {
       });
     }
 
-    res.send({
+    return res.send({
       objectId: input.objectId,
       isError: false,
       stsCode: 200,
@@ -119,10 +119,10 @@ router.post("/", async function (req, res, next) {
       pageTitle: result["scraped_page_title"],
     });
   } catch (error) {
-    res.send({
+    return res.send({
       isError: true,
       stsCode: 500,
-      msg: "Someting went wrong, can not scrape the page.",
+      msg: "Oops, terjadi kesalahan. Coba beberapa saat lagi.",
       errMsg: error.message,
     });
   }
@@ -144,7 +144,7 @@ router.get("/:objectId/download", async function (req, res, next) {
     })
   
     const download = Buffer.from(fileData)
-    res.end(download)
+    return res.end(download)
   }
   // const file = __dirname + `/${objectId}.owl`;
   // res.download(file);

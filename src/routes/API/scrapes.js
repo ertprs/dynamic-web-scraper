@@ -35,14 +35,14 @@ router.get("/:id", async function (req, res, next) {
       return res.send({
         isError: true,
         stsCode: 404,
-        msg: "Data not found.",
+        msg: "Data tidak ditemukan.",
       });
     }
   } catch (error) {
     return res.send({
       isError: true,
       stsCode: 500,
-      msg: "Someting went wrong, can not scrape the page.",
+      msg: "Oops, terjadi kesalahan. Coba beberapa saat lagi.",
       errMsg: error.message,
     });
   }
@@ -65,9 +65,9 @@ router.put("/:id", async function (req, res, next) {
   <rdf:Description rdf:about="${input.title}">`;
 
       for (let i = 0; i < input.attribute_names.length; i++) {
-        strXML += `\n<dc:${input.attribute_names[i]}>${
+        strXML += `\n<dc:${input.attribute_names[i].replace(/\s/g, "-")}>${
         input.attribute_values[i]
-      }</dc:${input.attribute_names[i]}>`;
+      }</dc:${input.attribute_names[i].replace(/\s/g, "-")}>`;
       }
       strXML += `
     </rdf:Description>
@@ -76,7 +76,7 @@ router.put("/:id", async function (req, res, next) {
       let arrContentJson = [];
       for (let i = 0; i < input.attribute_names.length; i++) {
         arrContentJson.push({
-          name: input.attribute_names[i],
+          name: input.attribute_names[i].replace(/\s/g, "-"),
           value: input.attribute_values[i]
         });
       }
@@ -88,7 +88,7 @@ router.put("/:id", async function (req, res, next) {
       let arrAttrs = []
       for (let i = 0; i < input.attribute_names.length; i++) {
         arrAttrs.push({
-          name: input.attribute_names[i],
+          name: input.attribute_names[i].replace(/\s/g, "-"),
           selectors: {
             name: attrs[i].selectors.name,
             type: attrs[i].selectors.type,
@@ -123,14 +123,47 @@ router.put("/:id", async function (req, res, next) {
       return res.send({
         isError: true,
         stsCode: 404,
-        msg: "Data not found.",
+        msg: "Data tidak ditemukan.",
       });
     }
   } catch (error) {
     return res.send({
       isError: true,
       stsCode: 500,
-      msg: "Someting went wrong, can not scrape the page.",
+      msg: "Oops, terjadi kesalahan. Coba beberapa saat lagi.",
+      errMsg: error.message,
+    });
+  }
+});
+
+router.delete("/:id", async function (req, res, next) {
+  try {
+    let scrape = await Scrape.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+    if (scrape) {
+      Scrape.destroy({
+        where: { id: req.params.id }
+      })
+      return res.send({
+        isError: false,
+        stsCode: 200,
+        message: "Data berhasil dihapus."
+      });
+    } else {
+      return res.send({
+        isError: true,
+        stsCode: 404,
+        msg: "Data tidak ditemukan.",
+      });
+    }
+  } catch (error) {
+    return res.send({
+      isError: true,
+      stsCode: 500,
+      msg: "Oops, terjadi kesalahan. Coba beberapa saat lagi.",
       errMsg: error.message,
     });
   }
