@@ -52,7 +52,7 @@ router.post("/", async function (req, res, next) {
     let arrContentJson = [];
     for (let i = 0; i < input.attribute.length; i++) {
       arrContentJson.push({
-        attribute: input.attribute[i],
+        name: input.attribute[i],
         value: result[input.attribute[i]]
       });
     }
@@ -76,7 +76,7 @@ router.post("/", async function (req, res, next) {
         code: input.objectId,
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: JSON.stringify({ xml: strXML, json: arrContentJson}),
+        content: JSON.stringify({ xml: strXML, json: {url: input.url, title: result["scraped_page_title"], attributes: arrContentJson}}),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs),
@@ -100,7 +100,7 @@ router.post("/", async function (req, res, next) {
       Scrape.update({
         url: input.url,
         page_title: result["scraped_page_title"],
-        content: JSON.stringify({ xml: strXML, json: arrContentJson}),
+        content: JSON.stringify({ xml: strXML, json: {url: input.url, title: result["scraped_page_title"], attributes: arrContentJson}}),
         // user_id: req.session.userInfo.id
         user_id: 1,
         attributes: JSON.stringify(arrAttrs)
@@ -108,7 +108,7 @@ router.post("/", async function (req, res, next) {
         where: {
           code: input.objectId
         }
-      })
+      });
     }
 
     res.send({

@@ -23,7 +23,7 @@ const getPagingData = (data, page, limit) => {
     let attrs = [];
     JSON.parse(s.attributes).forEach(attr => {
       attrs.push(attr.name);
-    })
+    });
     s.attributes = attrs.join(", ");
   });
   return {

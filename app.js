@@ -39,11 +39,15 @@ app.use(
 );
 app.use(flash());
 
+// Web Routes
 const auth = require('./src/middleware/auth');
 const authRouter = require("./src/routes/auth");
 const dashboardRouter = require("./src/routes/dashboard");
 const scraperRouter = require("./src/routes/scraper");
 const sitesRouter = require("./src/routes/sites");
+
+// API Routes
+const scrapesAPIRouter = require("./src/routes/API/scrapes");
 
 // set view engine setup
 hbs.registerHelper('json', function (val) {
@@ -126,6 +130,7 @@ app.use("/auth", authRouter);
 // require("./src/routes/dashboard")(app);
 app.use("/scraper", auth, scraperRouter);
 app.use("/sites", auth, sitesRouter);
+app.use("/api/scrapes", auth, scrapesAPIRouter);
 
 http.listen(3000, () => {
   console.log("listening on *:3000");
