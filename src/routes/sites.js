@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 const Scraper = require("../utils/Scraper");
 const ObjectID = require("bson").ObjectID;
 const Scrape = require("../../models/Scrape");
-var easyzip = require('easy-zip');
+var EasyZip = require('easy-zip').EasyZip;
 
 router.get("/detikcom", function (req, res, next) {
   // scrape().then((data) => console.log("Data", data));
@@ -25,9 +25,11 @@ router.get("/detikcom/indeks/zip", async function (req, res, next) {
   // Dapatkan link kemudian ekstrak data untuk setiap halaman
   // TODO: tandapa indexing terlebih dahulu, jadi langsung scrape per halaman
   try {
+    res.send("oke");
     // Siapkan zip
-    var zip2 = new easyzip.EasyZip();
+    var zip2 = new EasyZip();
     var jsFolder = zip2.folder('data');
+    let filename = req.query.title;
     // Proses indexing halaman
     let input = req.query;
     const browser = await puppeteer.launch({
@@ -63,9 +65,9 @@ router.get("/detikcom/indeks/zip", async function (req, res, next) {
     await browser.close();
     // Proses scraping per halaman
     let _input = null;
-    for (const link of content_links) {
+    for (let i = 0; i < content_links.length; i++) {
       _input = {
-        url: link,
+        url: content_links[i],
         attribute: ['Judul', 'Author', 'Tanggal', 'Detail'],
         selector: ['h1', 'detail__author', 'detail__date', 'p'],
         selector_type: ['tag', 'class', 'class', 'tag'],
@@ -167,8 +169,23 @@ router.get("/detikcom/indeks/zip", async function (req, res, next) {
         });
       }
     }
-    zip2.writeToResponse(res, `data-${req.query.title}`);
-    return res.end();
+    zip2.writeToFile(__dirname + `/../../public/data/detikcom-data-${filename}.zip`, () => {});
+    global.io.emit("downloadZipReady", {msg: "File zip siap didownload.", filename: `detikcom-data-${filename}.zip`});
+  } catch (error) {
+    console.log(error);
+    return res.send({
+      isError: true,
+      stsCode: 500,
+      msg: "Someting went wrong, can not scrape the page.",
+      errMsg: error.message,
+    });
+  }
+});
+
+router.get("/detikcom/indeks/zip/:filename/download", async function (req, res, next) {
+  try {
+    const file = __dirname + `/../../public/data/${req.params.filename}`;
+    return res.download(file);
   } catch (error) {
     return res.send({
       isError: true,
@@ -177,13 +194,6 @@ router.get("/detikcom/indeks/zip", async function (req, res, next) {
       errMsg: error.message,
     });
   }
-
-  // jsFolder.file('app.js', 'alert("hello world")');
-  // var data = "<html><body><h1>Inside new Html</h1></body></html>";
-  // jsFolder.file('index.html', data);
-  // console.log(req.query);
-  // zip2.writeToResponse(res, `data-${req.query.title}`);
-  // res.end();
 });
 
 router.post("/detikcom/indeks", async function (req, res, next) {

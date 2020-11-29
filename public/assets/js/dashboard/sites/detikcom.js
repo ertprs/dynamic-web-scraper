@@ -1,3 +1,42 @@
+var socket = io();
+socket.on('qrGenerated', function (data) {
+    console.log(data)
+    $('.qr_code').attr("src", data.qrCode);
+});
+socket.on('browserClose', function (data) {
+    alert(data.msg)
+    location.reload();
+});
+socket.on('qrReadSuccess', function (data) {
+    console.log(data.msg)
+    $('.qr_code').remove();
+});
+
+socket.on('isLogged', function (data) {
+    console.log(data.msg)
+    $('.qr_code').remove();
+});
+
+socket.on('isLogged', function (data) {
+    console.log(data.msg)
+    $('.qr_code').remove();
+});
+
+socket.on('downloadZipReady', function (data) {
+    console.log(data);
+    $(".btn_download_zip").attr('disabled', false);
+    $(".btn_download_zip").html(
+      '<i class="now-ui-icons arrows-1_cloud-download-93"></i> Unduh (.zip)'
+    );
+    window.open(`detikcom/indeks/zip/${data.filename}/download`, '_blank');
+});
+
+// let userInfo = {{{json userInfo}}}
+// console.log(userInfo)
+// socket.emit("accountLogin", {
+//     name: userInfo.name,
+//     email: userInfo.email,
+// });
 let i = 1;
 let data = {};
 $(document).ready(function () {
@@ -382,7 +421,25 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.btn_download_zip', function() {
-      window.open(`detikcom/indeks/zip?url=${$(this).data('url')}&extraction_type=default&title=${$(this).data('tanggal')}`, '_blank');
+      $(".btn_download_zip").attr('disabled', true);
+      $(".btn_download_zip").html(
+        '<i class="now-ui-icons loader_refresh spin"></i> Sedang memproses...'
+      );
+      $.ajax({
+        url: "/sites/detikcom/indeks/zip",
+        method: "GET",
+        data: {
+            url: $(this).data('url'),
+            extraction_type: 'default',
+            title: $(this).data('tanggal'),
+        },
+        success: function (res) {
+          console.log(res);
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
     });
 });
 
